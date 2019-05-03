@@ -2,7 +2,7 @@ $holeDistance = 23;
 $attachmentHookSafeDistance = 50;
 
 $holeRadius = 3;
-$width = 10;
+$width = 160;
 $boardThickness = 2;
 $thickness = 2;
 $totalHeight = 30;
@@ -23,11 +23,18 @@ module createHook() {
         toolHook();
         
         if($width < $attachmentHookSafeDistance){
+            translate([0,($width - $holeRadius) / 2,0])
             attachementPins();
         }else{
-            for (i = [0 : $width / $attachmentHookSafeDistance - 1] ){
-                translate([0, i * ($width / $attachmentHookSafeDistance), 0])
-                attachementPins();
+            $modulo = $width%$attachmentHookSafeDistance;
+            $pinCount = $width / $attachmentHookSafeDistance - 1;
+            
+            translate([0,28.5,0])
+            union(){
+                for (i = [0 : $pinCount] ){
+                    translate([0, i * $attachmentHookSafeDistance, 0])
+                    attachementPins();
+                }
             }
         }
     }
@@ -44,18 +51,18 @@ module toolHook(){
 }
 
 module lockPin(){
-   translate([-$lockPinWidth, ($width - $holeRadius) / 2, $lockPinTop]){
-        cube([$lockPinWidth, $holeRadius,$holeRadius]);
+   translate([-$lockPinWidth, 0, $lockPinTop]){
+        cube([$lockPinWidth, $holeRadius, $holeRadius]);
     }
     
     // Lock pin vertical
-    translate([-$lockPinWidth - ($holeRadius), ($width - $holeRadius) / 2, $lockPinTop]){
+    translate([-$lockPinWidth - ($holeRadius), 0, $lockPinTop]){
         cube([$holeRadius, $holeRadius, $lockPinHeight + $holeRadius]);
     } 
 }
 
 module supportPin(){
-    translate([-$boardThickness, ($width + $holeRadius) / 2, $lockPinTop - $holeDistance + ($holeRadius / 2)]){
+    translate([-$boardThickness, $holeRadius, $lockPinTop - $holeDistance + ($holeRadius / 2)]){
         translate([0,-($holeRadius / 2),0])
         rotate([0,90,0])
         cylinder(h = $boardThickness, r = $holeRadius / 2, $fn = 50);  
