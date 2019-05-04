@@ -1,40 +1,38 @@
-$holeDistance = 23;
-$attachmentHookSafeDistance = 50;
-
+// Board settings
+$holeDistance = 14; // Distance between holes (C/C)
 $holeRadius = 3;
-$width = 160;
+$holesBetweenAttachmentPins = 4; // 
 $boardThickness = 2;
+
+// Hook settings
+$width = 100;
+$height = 30;
 $thickness = 2;
-$totalHeight = 30;
 $hookDepth = 15;
 $hookHeight = 15;
 $lockPinHeight = 4;
 $lockPinWidth = $boardThickness;
-$lockPinOffset = 2;
+$lockPinOffset = 4;
 
-$lockPinTop = $totalHeight - ($holeRadius + $lockPinOffset);
+$lockPinTop = $height - ($holeRadius + $lockPinOffset);
 
 createHook();
 
 module createHook() {
     union(){
-        cube([$thickness,$width,$totalHeight]);
+        cube([$thickness,$width,$height]);
        
         toolHook();
         
-        if($width < $attachmentHookSafeDistance){
-            translate([0,($width - $holeRadius) / 2,0])
-            attachementPins();
-        }else{
-            $modulo = $width%$attachmentHookSafeDistance;
-            $pinCount = $width / $attachmentHookSafeDistance - 1;
-            
-            translate([0,28.5,0])
-            union(){
-                for (i = [0 : $pinCount] ){
-                    translate([0, i * $attachmentHookSafeDistance, 0])
-                    attachementPins();
-                }
+        $pinCount = ceil($width / ($holesBetweenAttachmentPins * $holeDistance));
+        $pinWidth = $holesBetweenAttachmentPins * $holeDistance * ($pinCount-1);
+        $translateY = $width - $pinWidth;
+        
+        translate([0,$translateY/2 - ($holeRadius/2),0])
+        union(){
+            for (i = [0 : $pinCount - 1] ){
+                translate([0, i * ($holesBetweenAttachmentPins * $holeDistance), 0])
+                attachementPins();
             }
         }
     }
@@ -55,7 +53,6 @@ module lockPin(){
         cube([$lockPinWidth, $holeRadius, $holeRadius]);
     }
     
-    // Lock pin vertical
     translate([-$lockPinWidth - ($holeRadius), 0, $lockPinTop]){
         cube([$holeRadius, $holeRadius, $lockPinHeight + $holeRadius]);
     } 
