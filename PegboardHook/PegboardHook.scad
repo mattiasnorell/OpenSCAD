@@ -1,13 +1,13 @@
 // Board settings
-$holeDistance = 14; // Distance between holes (C/C)
+$holeDistance = 12; // Distance between holes (C/C)
 $holeRadius = 2.5;
 $holesBetweenAttachmentPins = 4; // 
 $boardThickness = 2;
 
 // Hook settings
-$width = 3;
-$height = 30;
-$thickness = 2;
+$width = 4;
+$height = 25;
+$thickness = 3;
 $hookDepth = 15;
 $hookHeight = 15;
 $lockPinHeight = 4;
@@ -15,8 +15,6 @@ $lockPinWidth = $boardThickness;
 $lockPinOffset = 2;
 
 $lockPinTop = $height - ($holeRadius + $lockPinOffset);
-
-triangle($holeRadius, $holeRadius, $holeRadius);
 
 createHook();
 
@@ -66,10 +64,9 @@ module lockPin(){
 }
 
 module supportPin(){
-    translate([-$boardThickness, $holeRadius, $lockPinTop - $holeDistance + ($holeRadius / 2)]){
-        translate([0,-($holeRadius / 2),0])
-        rotate([0,90,0])
-        cylinder(h = $boardThickness, r = $holeRadius / 2, $fn = 18);  
+    translate([-$boardThickness, $holeRadius, $lockPinTop - $holeDistance + ($holeRadius/2)]){
+        translate([0,-$holeRadius,0])
+        cube([$holeRadius, $holeRadius, $holeRadius]);
     }
 }
 
