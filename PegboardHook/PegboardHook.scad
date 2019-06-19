@@ -5,7 +5,7 @@ $holesBetweenAttachmentPins = 4; //
 $boardThickness = 2;
 
 // Hook settings
-$width = 4;
+$width = 6;
 $height = 25;
 $thickness = 3;
 $hookDepth = 15;
@@ -64,7 +64,7 @@ module lockPin(){
 }
 
 module supportPin(){
-    translate([-$boardThickness, $holeRadius, $lockPinTop - $holeDistance + ($holeRadius/2)]){
+    translate([-$boardThickness, $holeRadius, $lockPinTop - $holeDistance + $holeRadius]){
         translate([0,-$holeRadius,0])
         cube([$holeRadius, $holeRadius, $holeRadius]);
     }
